@@ -1,0 +1,7 @@
+{
+  "name": "SATV Liberia",
+  "description": "A premium digital TV platform featuring over 50+ free-to-air public license channels, curated for the Liberian audience. Created by Akin S. Sokpah.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
