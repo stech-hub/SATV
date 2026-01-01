@@ -1,14 +1,12 @@
 
 import React, { useState, useMemo } from 'react';
-import { Search, Tv, Info, Home, Heart, Globe, Menu, X, Github, ExternalLink, Play } from 'lucide-react';
+import { Search, Tv, Info, Home, Heart, Globe, Menu, X, Github, ExternalLink, Play, Sparkles } from 'lucide-react';
 import { CHANNELS } from './constants';
 import { Category, Channel } from './types';
 import Player from './components/Player';
 import ChannelCard from './components/ChannelCard';
 
 const App: React.FC = () => {
-  // Initialize to null to force user interaction (click) before playback, 
-  // which avoids the "play() failed" autoplay error.
   const [currentChannel, setCurrentChannel] = useState<Channel | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<Category | 'All'>('All');
@@ -26,22 +24,22 @@ const App: React.FC = () => {
   }, [searchQuery, selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
-      {/* Header */}
-      <header className="h-16 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-50">
+    <div className="min-h-screen bg-slate-950 flex flex-col selection:bg-indigo-500/30">
+      {/* Premium Header */}
+      <header className="h-16 bg-slate-900/90 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 lg:hidden"
+            className="p-2 hover:bg-white/5 rounded-xl text-slate-400 lg:hidden transition-colors"
           >
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <div className="flex items-center gap-2 cursor-pointer group">
-            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:bg-indigo-500 transition-colors">
+          <div className="flex items-center gap-3 cursor-pointer group">
+            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(79,70,229,0.4)] group-hover:scale-105 transition-transform duration-300">
               <Tv className="text-white" size={24} />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-white leading-none">SATV</h1>
+              <h1 className="text-xl font-black tracking-tighter text-white leading-none">SATV</h1>
               <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-widest mt-0.5">Liberia Digital</p>
             </div>
           </div>
@@ -52,8 +50,8 @@ const App: React.FC = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={18} />
             <input 
               type="text" 
-              placeholder="Search 50+ channels..."
-              className="w-full bg-slate-800/50 border border-slate-700/50 text-slate-100 pl-10 pr-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all"
+              placeholder="Discover 50+ live channels..."
+              className="w-full bg-slate-800/40 border border-white/5 text-slate-100 pl-10 pr-4 py-2.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:bg-slate-800/80 transition-all placeholder:text-slate-600"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -62,10 +60,10 @@ const App: React.FC = () => {
 
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex flex-col items-end">
-            <span className="text-xs text-slate-400">Created by</span>
-            <span className="text-sm font-semibold text-white">Akin S. Sokpah</span>
+            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">Founder</span>
+            <span className="text-sm font-bold text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Akin S. Sokpah</span>
           </div>
-          <div className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center border border-slate-700 overflow-hidden">
+          <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center border-2 border-white/10 overflow-hidden shadow-lg">
              <img src="https://picsum.photos/seed/akin/100/100" alt="Akin" className="w-full h-full object-cover" />
           </div>
         </div>
@@ -73,129 +71,132 @@ const App: React.FC = () => {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Navigation Sidebar (Desktop) */}
-        <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} hidden lg:flex flex-col border-r border-slate-800 transition-all duration-300 bg-slate-900/40`}>
+        <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} hidden lg:flex flex-col border-r border-white/5 transition-all duration-300 bg-slate-900/20 backdrop-blur-sm`}>
           <nav className="p-4 space-y-2">
             <button 
               onClick={() => setSelectedCategory('All')}
-              className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${selectedCategory === 'All' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-slate-400 hover:bg-slate-800'}`}
+              className={`w-full flex items-center gap-3 p-3 rounded-2xl transition-all duration-300 ${selectedCategory === 'All' ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20' : 'text-slate-400 hover:bg-white/5'}`}
             >
               <Home size={20} />
-              {isSidebarOpen && <span className="font-medium">Discover</span>}
-            </button>
-            <button className="w-full flex items-center gap-3 p-3 rounded-xl text-slate-400 hover:bg-slate-800 transition-all">
-              <Heart size={20} />
-              {isSidebarOpen && <span className="font-medium">Favorites</span>}
+              {isSidebarOpen && <span className="font-semibold text-sm">Discover Live</span>}
             </button>
             <button 
               onClick={() => setSelectedCategory(Category.LIBERIA)}
-              className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${selectedCategory === Category.LIBERIA ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-slate-400 hover:bg-slate-800'}`}
+              className={`w-full flex items-center gap-3 p-3 rounded-2xl transition-all duration-300 ${selectedCategory === Category.LIBERIA ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20' : 'text-slate-400 hover:bg-white/5'}`}
             >
               <Globe size={20} />
-              {isSidebarOpen && <span className="font-medium">Liberia & Africa</span>}
+              {isSidebarOpen && <span className="font-semibold text-sm">Liberia & Africa</span>}
+            </button>
+            <button className="w-full flex items-center gap-3 p-3 rounded-2xl text-slate-400 hover:bg-white/5 transition-all group">
+              <Heart size={20} className="group-hover:text-rose-500 transition-colors" />
+              {isSidebarOpen && <span className="font-semibold text-sm">My Favorites</span>}
             </button>
           </nav>
           
-          <div className="mt-auto p-6">
+          <div className="mt-auto p-4">
             {isSidebarOpen && (
-              <div className="bg-slate-800/40 p-4 rounded-2xl border border-slate-700/50">
-                <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2">Pro Tip</h4>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  SATV is best experienced in full screen. Click the player to expand.
+              <div className="bg-indigo-600/10 p-4 rounded-3xl border border-indigo-500/20 space-y-3">
+                <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                    <Sparkles size={16} className="text-white" />
+                </div>
+                <h4 className="text-xs font-black text-indigo-400 uppercase tracking-widest">Premium Access</h4>
+                <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
+                  Streaming 50+ free license public channels directly from Monrovia to the world.
                 </p>
               </div>
             )}
           </div>
         </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          <div className="max-w-7xl mx-auto space-y-8">
-            {/* Featured Section */}
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-              <div className="xl:col-span-2 space-y-4">
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-y-auto p-4 lg:p-6 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-950/10 via-slate-950 to-slate-950">
+          <div className="max-w-[1600px] mx-auto space-y-8">
+            
+            {/* Top Grid: Player & Side List */}
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+              <div className="xl:col-span-3 space-y-4">
                 <Player channel={currentChannel} />
+                
                 {currentChannel ? (
-                  <div className="bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
+                  <div className="bg-slate-900/40 p-6 rounded-3xl border border-white/5 backdrop-blur-md">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-bold bg-indigo-600/20 text-indigo-400 px-2 py-0.5 rounded-md uppercase tracking-wide border border-indigo-600/30">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-black bg-indigo-600/20 text-indigo-400 px-2 py-0.5 rounded-md uppercase tracking-widest border border-indigo-600/30">
                             {currentChannel.category}
                           </span>
                         </div>
-                        <h2 className="text-2xl font-bold text-white">{currentChannel.name}</h2>
+                        <h2 className="text-3xl font-black text-white tracking-tight">{currentChannel.name}</h2>
                       </div>
                       <div className="flex items-center gap-2">
-                        <button className="p-3 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors text-slate-300">
+                        <button className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl transition-all text-slate-300 hover:text-rose-500">
                           <Heart size={20} />
                         </button>
-                        <button className="p-3 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors text-slate-300">
-                          <Info size={20} />
-                        </button>
-                        <button className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all text-white font-bold shadow-lg shadow-indigo-600/20">
+                        <button className="flex items-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-500 rounded-2xl transition-all text-white font-black shadow-xl shadow-indigo-600/30 text-sm">
                           <ExternalLink size={18} />
-                          Share Channel
+                          SHARE BROADCAST
                         </button>
                       </div>
                     </div>
-                    <p className="mt-4 text-slate-400 leading-relaxed">
+                    <p className="mt-4 text-slate-400 leading-relaxed font-medium text-sm">
                       {currentChannel.description}
                     </p>
                   </div>
                 ) : (
-                  <div className="bg-slate-900/50 p-12 rounded-2xl border border-slate-800 text-center flex flex-col items-center">
-                    <div className="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center mb-4 text-indigo-500">
-                      <Tv size={32} />
+                  <div className="bg-slate-900/30 p-12 rounded-[40px] border border-white/5 text-center flex flex-col items-center backdrop-blur-sm">
+                    <div className="w-20 h-20 bg-indigo-600/20 rounded-3xl flex items-center justify-center mb-6 text-indigo-500 shadow-inner">
+                      <Tv size={40} />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Welcome to SATV Liberia</h3>
-                    <p className="text-slate-400 max-w-md">
-                      Experience premium digital broadcasting. Select any channel from the list to begin your viewing experience.
+                    <h3 className="text-3xl font-black text-white mb-3 tracking-tighter">Experience SATV Liberia</h3>
+                    <p className="text-slate-500 max-w-md font-medium leading-relaxed">
+                      Choose from our curated collection of over 50+ high-definition public license channels. Curated by Akin S. Sokpah.
                     </p>
                   </div>
                 )}
               </div>
 
-              {/* Category Filter Pills (Mobile/Tablet Friendly) */}
-              <div className="space-y-6">
-                <div className="flex flex-wrap gap-2">
-                  {categories.map(cat => (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedCategory(cat as any)}
-                      className={`px-4 py-2 rounded-full text-xs font-bold transition-all border ${
-                        selectedCategory === cat 
-                          ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-600/20' 
-                          : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Vertical Mini Grid for Quick Selection */}
-                <div className="bg-slate-900/50 rounded-2xl border border-slate-800 p-4 space-y-4 h-[500px] overflow-y-auto">
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <Tv size={16} className="text-indigo-400" />
-                    Recommended
+              {/* Sidebar: Categories & Recommended */}
+              <div className="xl:col-span-1 space-y-6">
+                <div className="bg-slate-900/40 rounded-[32px] border border-white/5 p-4 flex flex-col h-[700px]">
+                  <h3 className="text-sm font-black text-white uppercase tracking-widest mb-4 flex items-center gap-2 px-2">
+                    <span className="w-2 h-2 bg-rose-500 rounded-full animate-pulse"></span>
+                    Trending Now
                   </h3>
-                  <div className="grid grid-cols-1 gap-3">
-                    {filteredChannels.slice(0, 15).map(channel => (
+                  
+                  {/* Category Pills inside sidebar for quick access */}
+                  <div className="flex flex-wrap gap-1.5 mb-4 px-2">
+                    {categories.slice(0, 5).map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedCategory(cat as any)}
+                        className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${
+                          selectedCategory === cat 
+                            ? 'bg-indigo-600 border-indigo-500 text-white' 
+                            : 'bg-white/5 border-transparent text-slate-500 hover:text-slate-300'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
+                    {filteredChannels.map(channel => (
                       <button 
                         key={channel.id}
                         onClick={() => setCurrentChannel(channel)}
-                        className={`flex items-center gap-3 p-2 rounded-xl border transition-all ${
+                        className={`w-full flex items-center gap-3 p-2 rounded-2xl border transition-all duration-300 group ${
                           currentChannel?.id === channel.id 
-                            ? 'bg-slate-800 border-indigo-500/50' 
-                            : 'bg-transparent border-transparent hover:bg-slate-800/50'
+                            ? 'bg-indigo-600/10 border-indigo-500/50' 
+                            : 'bg-transparent border-transparent hover:bg-white/5'
                         }`}
                       >
-                        <div className="w-16 h-10 rounded-lg overflow-hidden flex-shrink-0 bg-slate-800 border border-slate-700">
+                        <div className="w-20 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-slate-800 border border-white/10 group-hover:scale-105 transition-transform">
                           <img src={channel.logo} className="w-full h-full object-cover" alt={channel.name} />
                         </div>
                         <div className="text-left overflow-hidden">
-                          <p className="text-xs font-bold text-slate-200 truncate">{channel.name}</p>
-                          <p className="text-[10px] text-slate-500 truncate">{channel.category}</p>
+                          <p className={`text-xs font-bold truncate ${currentChannel?.id === channel.id ? 'text-indigo-400' : 'text-slate-200'}`}>{channel.name}</p>
+                          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{channel.category}</p>
                         </div>
                       </button>
                     ))}
@@ -204,18 +205,35 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Full Channel Grid Section */}
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                  All Channels
-                  <span className="text-sm font-normal text-slate-500 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
-                    {filteredChannels.length} available
+            {/* Main Channel Gallery */}
+            <div className="space-y-6 pt-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <h2 className="text-3xl font-black text-white tracking-tighter flex items-center gap-4">
+                  Global Broadcast Network
+                  <span className="text-xs font-bold text-slate-500 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
+                    {filteredChannels.length} Live Sources
                   </span>
                 </h2>
+                
+                {/* Horizontal Category Filter for the Gallery */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                    {categories.map(cat => (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedCategory(cat as any)}
+                        className={`whitespace-nowrap px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all border ${
+                          selectedCategory === cat 
+                            ? 'bg-indigo-600 border-indigo-500 text-white shadow-xl shadow-indigo-600/20' 
+                            : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:text-white'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                </div>
               </div>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4">
                 {filteredChannels.map(channel => (
                   <ChannelCard 
                     key={channel.id}
@@ -228,22 +246,38 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Footer Branding */}
-          <footer className="mt-20 py-10 border-t border-slate-900 flex flex-col items-center gap-6">
-            <div className="flex items-center gap-2 opacity-50 grayscale">
-              <div className="w-8 h-8 bg-slate-600 rounded-lg flex items-center justify-center">
-                <Tv className="text-white" size={18} />
+          {/* Majestic Footer */}
+          <footer className="mt-32 py-16 border-t border-white/5 flex flex-col items-center gap-8">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-xl">
+                <Tv className="text-slate-950" size={24} />
               </div>
-              <h1 className="text-lg font-bold tracking-tight text-white">SATV</h1>
+              <div>
+                <h1 className="text-2xl font-black tracking-tighter text-white">SATV LIBERIA</h1>
+                <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-[0.3em]">The Heart of Africa</p>
+              </div>
             </div>
-            <div className="text-center text-slate-500 max-w-lg space-y-2">
-              <p className="text-sm">© 2024 SATV Liberia. All public license streams are sourced from their respective official digital platforms.</p>
-              <p className="text-xs font-medium">Platform Architected & Developed by <span className="text-indigo-400">Akin S. Sokpah</span></p>
+            
+            <div className="text-center text-slate-500 max-w-2xl space-y-4 px-4">
+              <p className="text-sm font-medium leading-relaxed">
+                SATV is a premier digital aggregator of free-to-air public license broadcasts. We do not host content but provide a unified gateway for Liberian and global audiences to access open information.
+              </p>
+              <div className="pt-4 flex flex-col items-center gap-1">
+                <p className="text-xs font-black uppercase tracking-widest text-slate-400">Project Leadership</p>
+                <p className="text-xl font-black text-white bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-white">Akin S. Sokpah</p>
+              </div>
             </div>
-            <div className="flex gap-4">
-               <Github className="text-slate-600 hover:text-indigo-400 cursor-pointer transition-colors" size={20} />
-               <Globe className="text-slate-600 hover:text-indigo-400 cursor-pointer transition-colors" size={20} />
+
+            <div className="flex gap-6">
+               <button className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl text-slate-400 hover:text-white transition-all">
+                 <Github size={24} />
+               </button>
+               <button className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl text-slate-400 hover:text-white transition-all">
+                 <Globe size={24} />
+               </button>
             </div>
+            
+            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">© 2024 SATV Digital Monrovia</p>
           </footer>
         </main>
       </div>
